@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
-import meow from 'meow'
-
-import setCordovaVersion from './index'
+import meow from 'meow';
+import setCordovaVersion from './index';
 
 const help = `
     Usage
@@ -30,8 +29,8 @@ const cli = meow(
   }
 )
 
-const filename = cli.input[0] || null
-const version = cli.flags.version || null
-const buildNumber = +cli.flags.buildNumber || null
+const filename = cli.input[0] || null;
+const version = cli.flags.version || null;
+const buildNumber = +cli.flags.buildNumber || null;
 
-setCordovaVersion(filename, version, buildNumber)
+setCordovaVersion(filename, version, buildNumber);

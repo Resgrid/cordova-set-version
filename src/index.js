@@ -17,78 +17,78 @@ const DefaultConfigPath = './config.xml'
  * @param {function} callback
  */
 function cordovaSetVersion (...args) {
-  let [configPath, version, buildNumber, callback] = parseArguments(...args)
+  let [configPath, version, buildNumber, callback] = parseArguments(...args);
 
-  configPath = configPath || DefaultConfigPath
-  version = version || null
-  buildNumber = buildNumber || null
-  callback = callback || rethrow()
+  configPath = configPath || DefaultConfigPath;
+  version = version || null;
+  buildNumber = buildNumber || null;
+  callback = callback || rethrow();
 
   if (typeof callback !== 'function') {
-    throw new TypeError('"callback" argument must be a function')
+    throw new TypeError('"callback" argument must be a function');
   }
 
   if (typeof configPath !== 'string') {
-    callback(new TypeError('"configPath" argument must be a string'))
-    return
+    callback(new TypeError('"configPath" argument must be a string'));
+    return;
   }
 
   if (version && typeof version !== 'string') {
-    callback(new TypeError('"version" argument must be a string'))
-    return
+    callback(new TypeError('"version" argument must be a string'));
+    return;
   }
 
   if (buildNumber && typeof buildNumber !== 'number') {
-    callback(new TypeError('"buildNumber" argument must be an integer'))
-    return
+    callback(new TypeError('"buildNumber" argument must be an integer'));
+    return;
   }
 
   fs.readFile(configPath, 'UTF-8', (error, data) => {
     if (error) {
-      callback(error)
-      return
+      callback(error);
+      return;
     }
 
     if (!version && !buildNumber) {
       fs.readFile('./package.json', 'UTF-8', (error, data) => {
         if (error) {
-          callback(error)
-          return
+          callback(error);
+          return;
         }
 
         try {
-          let pkg = JSON.parse(data)
-          updateConfigXml(pkg.version)
+          let pkg = JSON.parse(data);
+          updateConfigXml(pkg.version);
         } catch (exception) {
-          callback(exception)
+          callback(exception);
         }
       })
     } else {
-      updateConfigXml(version)
+      updateConfigXml(version);
     }
 
     function updateConfigXml (version) {
       xmlParser.parseString(data, (error, xml) => {
         if (error) {
-          callback(error)
-          return
+          callback(error);
+          return;
         }
 
         if (version) {
-          xml.widget.$.version = version
+          xml.widget.$.version = version;
+          xml.widget.$['ios-CFBundleVersion'] = version;
+          xml.widget.$['osx-CFBundleVersion'] = version;
         }
 
         if (buildNumber) {
-          xml.widget.$['android-versionCode'] = buildNumber
-          xml.widget.$['ios-CFBundleVersion'] = buildNumber
-          xml.widget.$['osx-CFBundleVersion'] = buildNumber
+          xml.widget.$['android-versionCode'] = buildNumber;
         }
 
-        let newData = xmlBuilder.buildObject(xml)
-        fs.writeFile(configPath, newData, { encoding: 'UTF-8' }, callback)
-      })
+        let newData = xmlBuilder.buildObject(xml);
+        fs.writeFile(configPath, newData, { encoding: 'UTF-8' }, callback);
+      });
     }
-  })
+  });
 }
 
 function parseArguments (...args) {
