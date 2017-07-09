@@ -1,36 +1,33 @@
 #!/usr/bin/env node
+'use strict';
 
-import meow from 'meow';
-import setCordovaVersion from './index';
+var _meow = require('meow');
 
-const help = `
-    Usage
-      $ cordova-set-version [-v|--version <version>] [-b|--build-number <build-number>] [config.xml]
-    
-    Options
-      -v, --version Version to set
-      -b, --build-number Build number to set
-      
-    Examples
-      $ cordova-set-version -v 2.4.9
-      $ cordova-set-version -b 86
-      $ cordova-set-version -v 2.4.9 -b 86
-`
+var _meow2 = _interopRequireDefault(_meow);
 
-const cli = meow(
-  {
-    version: false,
-    help
-  }, {
-    alias: {
-      v: 'version',
-      b: 'buildNumber'
-    }
+var _index = require('./index');
+var _index2 = _interopRequireDefault(_index);
+
+var _rethrow = require('./rethrow');
+var _rethrow2 = _interopRequireDefault(_rethrow);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var help = '\n    Usage\n      $ cordova-set-version [-v|--version <version>] [-b|--build-number <build-number>] [config.xml]\n    \n    Options\n      -v, --version Version to set\n      -b, --build-number Build number to set\n      \n    Examples\n      $ cordova-set-version -v 2.4.9\n      $ cordova-set-version -b 86\n      $ cordova-set-version -v 2.4.9 -b 86\n';
+
+var cli = (0, _meow2.default)({
+  version: false,
+  help: help
+}, {
+  alias: {
+    v: 'version',
+    b: 'buildNumber'
   }
-)
+});
 
-const filename = cli.input[0] || null;
-const version = cli.flags.version || null;
-const buildNumber = +cli.flags.buildNumber || null;
+var filename = cli.input[0] || './config.xml';
+var version = String(cli.flags.version) || null;
+var buildNumber = +cli.flags.buildNumber || null;
+var callback = _rethrow2.default;
 
-setCordovaVersion(filename, version, buildNumber);
+(0, _index2.default)(filename, version, buildNumber, callback);

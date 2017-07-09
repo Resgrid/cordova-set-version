@@ -74,5 +74,5 @@
     "test:watch": "npm test -- --watch --reporter mocha-better-spec-reporter --reporter-options clear-screen=true",
     "upload-coverage": "codecov"
   },
-  "version": "4.0.1"
+  "version": "4.0.3"
 }

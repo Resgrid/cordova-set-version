@@ -1,9 +1,14 @@
-function rethrow () {
-  return (error) => {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function rethrow() {
+  return function (error) {
     if (error) {
-      throw error
+      throw error;
     }
-  }
+  };
 }
 
-export default rethrow
+exports.default = rethrow;
